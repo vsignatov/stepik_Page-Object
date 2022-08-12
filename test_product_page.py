@@ -14,22 +14,30 @@ import time
                                   pytest.param("http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer7", marks=pytest.mark.xfail),
                                   "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer8",
                                   "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer9"])
- 
-def test_AddItemToBasket(browser, promo_page):
-    link = f"{promo_page}"
-    page = BasePage (browser, link)
-    page.open_browser()
-    book_name = browser.find_element(*page_elements.BookName).text
-    book_price = browser.find_element(*page_elements.BookPrice).text
-    button = browser.find_element(*page_elements.Button)
-    button.click()
-    page.solve_quiz_and_get_code()
-    message_book_name = browser.find_element(*page_elements.alert_successfull).text
-    assert book_name == message_book_name, "Наименование товара отличаеся"
-    button_basket = browser.find_element (*basket_elements.ButtonBasket)
-    button_basket.click ()
-    book_price_basket = browser.find_element (*basket_elements.Book_price_in_basket).text
-    assert book_price == book_price_basket, "Цена в корзине отличается"
+                                  
+class TestUserAddToBasketFromProductPage ():
+    def test_guest_cant_see_success_message (browser):
+        link = "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer0"
+        page = BasePage (browser, link)
+        page.open_browser()
+        check = page.is_not_element_present(page_elements.alert_successfull)
+        assert check == True
+    
+    def test_guest_can_add_product_to_basket(browser, promo_page):
+        link = f"{promo_page}"
+        page = BasePage (browser, link)
+        page.open_browser()
+        book_name = browser.find_element(*page_elements.BookName).text
+        book_price = browser.find_element(*page_elements.BookPrice).text
+        button = browser.find_element(*page_elements.Button)
+        button.click()
+        page.solve_quiz_and_get_code()
+        message_book_name = browser.find_element(*page_elements.alert_successfull).text
+        assert book_name == message_book_name, "Наименование товара отличаеся"
+        button_basket = browser.find_element (*basket_elements.ButtonBasket)
+        button_basket.click ()
+        book_price_basket = browser.find_element (*basket_elements.Book_price_in_basket).text
+        assert book_price == book_price_basket, "Цена в корзине отличается"
     
     
 def test_guest_cant_see_success_message_after_adding_product_to_basket(browser): 
@@ -42,12 +50,7 @@ def test_guest_cant_see_success_message_after_adding_product_to_basket(browser):
     check = page.is_not_element_present(page_elements.alert_successfull)
     assert check == True
    
-def test_guest_cant_see_success_message (browser):
-    link = "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer0"
-    page = BasePage (browser, link)
-    page.open_browser()
-    check = page.is_not_element_present(page_elements.alert_successfull)
-    assert check == True
+
    
 def test_message_disappeared_after_adding_product_to_basket (browser):
     link = "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer0"

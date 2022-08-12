@@ -6,7 +6,12 @@ class MainPageLocators():
 class LoginPageLocators():
     login_form = (By.ID, "login_form")
     register_form = (By.ID, "register_form")
-    
+    register_email_input = (By.ID, "id_registration-email")
+    register_password_input = (By.ID, "id_registration-password1")
+    confirm_password_input = (By.ID, "id_registration-password2")
+    register_button = (By.CSS_SELECTOR, "[value = \"Register\"]")
+    #пользователь авторизован
+    button_account = (By.CLASS, "icon-user")
     
 class product_page ():
     add_to_basket = (By.CSS_SELECTOR, ".btn_add_to_basket")
